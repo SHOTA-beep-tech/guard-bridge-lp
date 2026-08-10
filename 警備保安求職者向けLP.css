@@ -513,6 +513,51 @@ section {
   color: var(--muted);
 }
 
+/* ===== Note teaser ===== */
+.note-teaser {
+  text-align: center;
+  border-top: 1px solid var(--line);
+  border-bottom: 1px solid var(--line);
+}
+
+.note-teaser__label {
+  font-size: 0.78rem;
+  letter-spacing: 0.2em;
+  color: var(--navy);
+  font-weight: 700;
+  margin-bottom: 22px;
+}
+
+.note-teaser__title {
+  font-size: 1.6rem;
+  font-weight: 700;
+  color: var(--ink);
+  line-height: 1.6;
+  margin-bottom: 20px;
+}
+
+.note-teaser__desc {
+  font-size: 0.9rem;
+  color: var(--muted);
+  max-width: 480px;
+  margin: 0 auto 30px;
+}
+
+.note-teaser__link {
+  display: inline-block;
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: var(--ink);
+  border-bottom: 2px solid var(--ink);
+  padding-bottom: 4px;
+  transition: color 0.2s ease, border-color 0.2s ease;
+}
+
+.note-teaser__link:hover {
+  color: var(--navy);
+  border-color: var(--navy);
+}
+
 /* ===== CTA ===== */
 .cta {
   max-width: none;
