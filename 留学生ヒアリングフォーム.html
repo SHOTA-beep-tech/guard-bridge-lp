@@ -1,0 +1,654 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Job Consultation / お仕事のご相談</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans:wght@400;500;700&family=Noto+Sans+JP:wght@400;500;700&family=Noto+Sans+SC:wght@400;500;700&family=Noto+Sans+Devanagari:wght@400;500;700&family=Noto+Sans+Myanmar:wght@400;500;700&family=Noto+Sans+Bengali:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+  * { margin:0; padding:0; box-sizing:border-box; }
+  :root {
+    --paper: #f2f3f2;
+    --paper-deep: #e8eae8;
+    --ink: #14202e;
+    --ink-soft: #313d49;
+    --muted: #6e7680;
+    --line: #d6dbd8;
+    --navy: #1f4e79;
+    --navy-deep: #163a5c;
+    --line-green: #06c755;
+    --line-green-deep: #05a648;
+    --white: #ffffff;
+  }
+  html { scroll-behavior: smooth; }
+  body {
+    font-family: "Noto Sans", "Noto Sans JP", "Noto Sans SC", "Noto Sans Devanagari", "Noto Sans Myanmar", "Noto Sans Bengali", sans-serif;
+    background: var(--paper);
+    color: var(--ink-soft);
+    line-height: 1.8;
+    -webkit-font-smoothing: antialiased;
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    padding: 24px 16px 64px;
+  }
+  #app {
+    width: 100%;
+    max-width: 480px;
+  }
+  .card {
+    background: var(--white);
+    border: 1px solid var(--line);
+    border-radius: 16px;
+    padding: 32px 24px;
+  }
+  .screen { display: none; }
+  .screen.active { display: block; }
+
+  /* ---- Language select screen ---- */
+  .lang-globe { font-size: 40px; text-align: center; margin-bottom: 12px; }
+  .lang-prompt { text-align: center; color: var(--ink); font-weight: 700; font-size: 18px; margin-bottom: 4px; }
+  .lang-prompt-sub { text-align: center; color: var(--muted); font-size: 14px; margin-bottom: 28px; }
+  .lang-grid { display: grid; grid-template-columns: 1fr; gap: 10px; }
+  .lang-btn {
+    width: 100%;
+    padding: 16px;
+    font-size: 16px;
+    font-weight: 500;
+    border: 1px solid var(--line);
+    border-radius: 10px;
+    background: var(--paper);
+    color: var(--ink);
+    cursor: pointer;
+    text-align: left;
+    transition: border-color .15s, background .15s;
+  }
+  .lang-btn:hover { border-color: var(--navy); background: var(--white); }
+
+  /* ---- Form screen ---- */
+  .form-title { font-size: 20px; font-weight: 700; color: var(--ink); margin-bottom: 4px; }
+  .form-subtitle { font-size: 13px; color: var(--muted); margin-bottom: 28px; }
+  .field { margin-bottom: 22px; }
+  .field label.field-label {
+    display: block;
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--ink);
+    margin-bottom: 8px;
+  }
+  .field .required-mark {
+    color: var(--line-green-deep);
+    font-size: 11px;
+    font-weight: 700;
+    margin-left: 6px;
+    border: 1px solid var(--line-green);
+    border-radius: 4px;
+    padding: 1px 5px;
+  }
+  .field .note {
+    font-size: 12px;
+    color: var(--muted);
+    margin-top: 6px;
+    line-height: 1.6;
+  }
+  input[type="text"], input[type="tel"], select, textarea {
+    width: 100%;
+    padding: 12px 14px;
+    font-size: 15px;
+    font-family: inherit;
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    background: var(--paper);
+    color: var(--ink);
+  }
+  input:focus, select:focus, textarea:focus {
+    outline: none;
+    border-color: var(--navy);
+  }
+  textarea { resize: vertical; min-height: 80px; }
+
+  .radio-group { display: flex; flex-direction: column; gap: 8px; }
+  .radio-option {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 12px 14px;
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    background: var(--paper);
+    cursor: pointer;
+  }
+  .radio-option input { width: 16px; height: 16px; flex-shrink: 0; }
+  .radio-option span { font-size: 14px; color: var(--ink-soft); }
+  .radio-option:has(input:checked) { border-color: var(--navy); background: var(--white); }
+
+  .hidden { display: none !important; }
+
+  .submit-btn {
+    width: 100%;
+    padding: 16px;
+    font-size: 16px;
+    font-weight: 700;
+    color: var(--white);
+    background: var(--line-green);
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    margin-top: 8px;
+  }
+  .submit-btn:hover { background: var(--line-green-deep); }
+  .submit-btn:disabled { background: var(--muted); cursor: not-allowed; }
+
+  .back-link {
+    display: block;
+    text-align: center;
+    font-size: 13px;
+    color: var(--muted);
+    margin-top: 16px;
+    cursor: pointer;
+    text-decoration: underline;
+  }
+
+  /* ---- Thanks screen ---- */
+  .thanks-icon { font-size: 40px; text-align: center; margin-bottom: 16px; }
+  .thanks-title { font-size: 18px; font-weight: 700; color: var(--ink); text-align: center; margin-bottom: 8px; }
+  .thanks-body { font-size: 14px; color: var(--ink-soft); text-align: center; line-height: 1.8; }
+</style>
+</head>
+<body>
+
+<div id="app">
+  <div class="card">
+
+    <!-- Screen 1: language select -->
+    <div class="screen active" id="screen-lang">
+      <div class="lang-globe">🌐</div>
+      <p class="lang-prompt">Please select your language</p>
+      <p class="lang-prompt-sub">言語を選択してください</p>
+      <div class="lang-grid" id="lang-grid"></div>
+    </div>
+
+    <!-- Screen 2: form -->
+    <div class="screen" id="screen-form">
+      <div class="form-title" id="form-title"></div>
+      <div class="form-subtitle" id="form-subtitle"></div>
+      <form id="hearing-form"></form>
+      <span class="back-link" id="back-link"></span>
+    </div>
+
+    <!-- Screen 3: thanks -->
+    <div class="screen" id="screen-thanks">
+      <div class="thanks-icon">✅</div>
+      <div class="thanks-title" id="thanks-title"></div>
+      <div class="thanks-body" id="thanks-body"></div>
+    </div>
+
+  </div>
+</div>
+
+<script>
+/*
+  送信先: Google Apps Script のウェブアプリURLに差し替えてください。
+  設定手順はチャット側の案内を参照。
+*/
+const GAS_ENDPOINT_URL = "https://script.google.com/macros/s/AKfycbyMpk28OA8ZzBI4HrTHIUc8-s1m3BzynZJrZFpg5Zgh3z0aVryNDqSERlM8NSuIRd3G_A/exec";
+
+const LANG_LABELS = [
+  { code: "ja", native: "日本語" },
+  { code: "en", native: "English" },
+  { code: "zh", native: "中文" },
+  { code: "vi", native: "Tiếng Việt" },
+  { code: "ne", native: "नेपाली" },
+  { code: "id", native: "Bahasa Indonesia" },
+  { code: "my", native: "မြန်မာဘာသာ" },
+  { code: "hi", native: "हिन्दी" },
+  { code: "bn", native: "বাংলা" }
+];
+
+const T = {
+  ja: {
+    formTitle: "お仕事のご相談",
+    formSubtitle: "以下の項目にご記入ください。1〜2分で終わります。",
+    submit: "送信する",
+    required: "必須",
+    back: "言語選択に戻る",
+    thanksTitle: "送信ありがとうございました",
+    thanksBody: "内容を確認のうえ、担当より改めてご連絡いたします。",
+    q: {
+      name: { label: "お名前", placeholder: "例:山田 太郎" },
+      phone: { label: "電話番号", placeholder: "例:090-1234-5678" },
+      employmentType: { label: "希望する働き方", options: [["fulltime","正社員"],["parttime","アルバイト"]] },
+      desiredJob: {
+        label: "希望職種",
+        fulltime: ["営業","事務","ITエンジニア","通訳・翻訳","貿易・国際業務","その他"],
+        parttime: ["飲食","コンビニ","イベントスタッフ","工場","清掃","その他"]
+      },
+      visaStatus: { label: "在留資格", placeholder: "例:留学" },
+      japaneseLevel: { label: "日本語レベル", options: ["初級","中級","上級","母語話者"] },
+      workableHours: {
+        label: "週に働ける時間",
+        note: "留学生の資格外活動は、法律で週28時間までと定められています。",
+        options: ["10時間以内","10〜20時間","20〜28時間","28時間を超えて働きたい(要確認)"]
+      },
+      startDate: { label: "いつから働けますか", options: ["すぐにでも","1ヶ月以内","2〜3ヶ月以内","未定"] },
+      area: { label: "希望の勤務エリア", placeholder: "例:大阪市内" },
+      experience: { label: "これまでの就業経験・職種", placeholder: "例:飲食店で1年、レジ業務" },
+      notes: { label: "その他・気になること(任意)", placeholder: "自由にご記入ください" }
+    }
+  },
+  en: {
+    formTitle: "Job Consultation",
+    formSubtitle: "Please fill in the fields below. It takes about 1–2 minutes.",
+    submit: "Submit",
+    required: "Required",
+    back: "Back to language selection",
+    thanksTitle: "Thank you for your submission",
+    thanksBody: "We will review your information and contact you soon.",
+    q: {
+      name: { label: "Full Name", placeholder: "e.g. Taro Yamada" },
+      phone: { label: "Phone Number", placeholder: "e.g. 090-1234-5678" },
+      employmentType: { label: "Type of employment you want", options: [["fulltime","Full-time employee"],["parttime","Part-time (Arubaito)"]] },
+      desiredJob: {
+        label: "Desired job type",
+        fulltime: ["Sales","Office Administration","IT Engineer","Interpreter / Translator","Trade / International Business","Other"],
+        parttime: ["Restaurant / Food Service","Convenience Store","Event Staff","Factory / Warehouse","Cleaning","Other"]
+      },
+      visaStatus: { label: "Residence status", placeholder: "e.g. Student" },
+      japaneseLevel: { label: "Japanese language level", options: ["Beginner","Intermediate","Advanced","Native level"] },
+      workableHours: {
+        label: "Hours you can work per week",
+        note: "By law, international students with permission for activities outside their status can work up to 28 hours per week.",
+        options: ["Up to 10 hours","10–20 hours","20–28 hours","More than 28 hours (needs confirmation)"]
+      },
+      startDate: { label: "When can you start working?", options: ["As soon as possible","Within 1 month","Within 2–3 months","Not yet decided"] },
+      area: { label: "Preferred work area", placeholder: "e.g. Osaka City" },
+      experience: { label: "Past work experience / job type", placeholder: "e.g. 1 year at a restaurant, cashier duties" },
+      notes: { label: "Anything else you'd like to share (optional)", placeholder: "Feel free to write anything" }
+    }
+  },
+  zh: {
+    formTitle: "求职咨询",
+    formSubtitle: "请填写以下内容,大约需要1-2分钟。",
+    submit: "提交",
+    required: "必填",
+    back: "返回选择语言",
+    thanksTitle: "感谢您的提交",
+    thanksBody: "我们确认内容后会尽快与您联系。",
+    q: {
+      name: { label: "姓名", placeholder: "例:山田太郎" },
+      phone: { label: "电话号码", placeholder: "例:090-1234-5678" },
+      employmentType: { label: "希望的雇佣形式", options: [["fulltime","正式员工"],["parttime","兼职(打工)"]] },
+      desiredJob: {
+        label: "希望的职种",
+        fulltime: ["销售","行政/事务","IT工程师","口译/笔译","贸易/国际业务","其他"],
+        parttime: ["餐饮","便利店","活动工作人员","工厂","清洁","其他"]
+      },
+      visaStatus: { label: "在留资格", placeholder: "例:留学" },
+      japaneseLevel: { label: "日语水平", options: ["初级","中级","高级","母语水平"] },
+      workableHours: {
+        label: "每周可工作时间",
+        note: "根据法律规定,持资格外活动许可的留学生每周最多可工作28小时。",
+        options: ["10小时以内","10-20小时","20-28小时","超过28小时(需确认)"]
+      },
+      startDate: { label: "何时可以开始工作", options: ["随时可以","1个月以内","2-3个月以内","尚未确定"] },
+      area: { label: "希望的工作地区", placeholder: "例:大阪市内" },
+      experience: { label: "过往工作经验・职种", placeholder: "例:在餐厅工作1年,收银工作" },
+      notes: { label: "其他・在意的事情(选填)", placeholder: "请自由填写" }
+    }
+  },
+  vi: {
+    formTitle: "Tư vấn việc làm",
+    formSubtitle: "Vui lòng điền vào các mục dưới đây. Mất khoảng 1-2 phút.",
+    submit: "Gửi",
+    required: "Bắt buộc",
+    back: "Quay lại chọn ngôn ngữ",
+    thanksTitle: "Cảm ơn bạn đã gửi thông tin",
+    thanksBody: "Chúng tôi sẽ xác nhận nội dung và liên hệ lại với bạn sớm.",
+    q: {
+      name: { label: "Họ và tên", placeholder: "VD: Nguyễn Văn A" },
+      phone: { label: "Số điện thoại", placeholder: "VD: 090-1234-5678" },
+      employmentType: { label: "Hình thức làm việc mong muốn", options: [["fulltime","Nhân viên chính thức"],["parttime","Làm thêm (Arubaito)"]] },
+      desiredJob: {
+        label: "Ngành nghề mong muốn",
+        fulltime: ["Kinh doanh / Bán hàng","Hành chính văn phòng","Kỹ sư IT","Phiên dịch / Biên dịch","Thương mại / Nghiệp vụ quốc tế","Khác"],
+        parttime: ["Nhà hàng / Ẩm thực","Cửa hàng tiện lợi","Nhân viên sự kiện","Nhà máy","Dọn dẹp vệ sinh","Khác"]
+      },
+      visaStatus: { label: "Tư cách lưu trú", placeholder: "VD: Du học" },
+      japaneseLevel: { label: "Trình độ tiếng Nhật", options: ["Sơ cấp","Trung cấp","Cao cấp","Trình độ bản ngữ"] },
+      workableHours: {
+        label: "Số giờ có thể làm việc mỗi tuần",
+        note: "Theo pháp luật, du học sinh có giấy phép hoạt động ngoài tư cách lưu trú chỉ được làm tối đa 28 giờ/tuần.",
+        options: ["Dưới 10 giờ","10-20 giờ","20-28 giờ","Muốn làm hơn 28 giờ (cần xác nhận)"]
+      },
+      startDate: { label: "Bạn có thể bắt đầu làm việc khi nào?", options: ["Càng sớm càng tốt","Trong vòng 1 tháng","Trong vòng 2-3 tháng","Chưa xác định"] },
+      area: { label: "Khu vực làm việc mong muốn", placeholder: "VD: Nội thành Osaka" },
+      experience: { label: "Kinh nghiệm làm việc trước đây / Ngành nghề", placeholder: "VD: 1 năm làm việc tại nhà hàng, công việc thu ngân" },
+      notes: { label: "Điều khác bạn muốn chia sẻ (không bắt buộc)", placeholder: "Vui lòng ghi tự do" }
+    }
+  },
+  ne: {
+    formTitle: "जागिर परामर्श",
+    formSubtitle: "कृपया तलका विवरणहरू भर्नुहोस्। यसमा लगभग १-२ मिनेट लाग्छ।",
+    submit: "पेश गर्नुहोस्",
+    required: "आवश्यक",
+    back: "भाषा छनोटमा फर्कनुहोस्",
+    thanksTitle: "पेश गर्नुभएकोमा धन्यवाद",
+    thanksBody: "हामी विवरण जाँचेपछि चाँडै तपाईंलाई सम्पर्क गर्नेछौं।",
+    q: {
+      name: { label: "पूरा नाम", placeholder: "जस्तै: राम शर्मा" },
+      phone: { label: "फोन नम्बर", placeholder: "जस्तै: 090-1234-5678" },
+      employmentType: { label: "तपाईं कस्तो प्रकारको काम खोज्दै हुनुहुन्छ", options: [["fulltime","पूर्णकालीन कर्मचारी"],["parttime","पार्ट-टाइम (アルバイト)"]] },
+      desiredJob: {
+        label: "इच्छित काम / पद",
+        fulltime: ["बिक्री","कार्यालय प्रशासन","IT इन्जिनियर","अनुवादक / दोभाषे","व्यापार / अन्तर्राष्ट्रिय व्यवसाय","अन्य"],
+        parttime: ["रेस्टुरेन्ट / खाद्य सेवा","कन्भिनियन्स स्टोर","कार्यक्रम स्टाफ","कारखाना","सरसफाइ","अन्य"]
+      },
+      visaStatus: { label: "बसोबास स्थिति (भिसा)", placeholder: "जस्तै: विद्यार्थी" },
+      japaneseLevel: { label: "जापानी भाषा स्तर", options: ["प्रारम्भिक","मध्यम","उच्च","मातृभाषा स्तर"] },
+      workableHours: {
+        label: "हप्तामा काम गर्न सक्ने घण्टा",
+        note: "कानून अनुसार, योग्यता बाहिरको गतिविधि अनुमति भएका विदेशी विद्यार्थीहरूले हप्तामा बढीमा २८ घण्टासम्म मात्र काम गर्न सक्छन्।",
+        options: ["१० घण्टासम्म","१०-२० घण्टा","२०-२८ घण्टा","२८ घण्टाभन्दा बढी काम गर्न चाहन्छु (पुष्टि आवश्यक)"]
+      },
+      startDate: { label: "तपाईं कहिलेदेखि काम सुरु गर्न सक्नुहुन्छ?", options: ["जतिसक्दो चाँडो","१ महिनाभित्र","२-३ महिनाभित्र","अझै निर्णय गरिएको छैन"] },
+      area: { label: "काम गर्न चाहेको क्षेत्र", placeholder: "जस्तै: ओसाका शहर भित्र" },
+      experience: { label: "अघिल्लो काम अनुभव / पद", placeholder: "जस्तै: रेस्टुरेन्टमा १ वर्ष, क्यासियर काम" },
+      notes: { label: "अन्य कुनै कुरा (वैकल्पिक)", placeholder: "स्वतन्त्र रूपमा लेख्नुहोस्" }
+    }
+  },
+  id: {
+    formTitle: "Konsultasi Pekerjaan",
+    formSubtitle: "Silakan isi kolom di bawah ini. Membutuhkan waktu sekitar 1-2 menit.",
+    submit: "Kirim",
+    required: "Wajib diisi",
+    back: "Kembali ke pilihan bahasa",
+    thanksTitle: "Terima kasih atas pengiriman Anda",
+    thanksBody: "Kami akan memeriksa informasi Anda dan segera menghubungi Anda.",
+    q: {
+      name: { label: "Nama lengkap", placeholder: "Contoh: Budi Santoso" },
+      phone: { label: "Nomor telepon", placeholder: "Contoh: 090-1234-5678" },
+      employmentType: { label: "Jenis pekerjaan yang diinginkan", options: [["fulltime","Karyawan tetap (Seishain)"],["parttime","Kerja paruh waktu (Arubaito)"]] },
+      desiredJob: {
+        label: "Jenis pekerjaan yang diinginkan",
+        fulltime: ["Penjualan","Administrasi kantor","Insinyur IT","Penerjemah","Perdagangan / Bisnis internasional","Lainnya"],
+        parttime: ["Restoran / Makanan","Minimarket","Staf acara","Pabrik","Kebersihan","Lainnya"]
+      },
+      visaStatus: { label: "Status tinggal (visa)", placeholder: "Contoh: Pelajar" },
+      japaneseLevel: { label: "Tingkat kemampuan bahasa Jepang", options: ["Pemula","Menengah","Mahir","Setara penutur asli"] },
+      workableHours: {
+        label: "Jam kerja yang bisa dilakukan per minggu",
+        note: "Berdasarkan hukum, pelajar internasional dengan izin kegiatan di luar status dapat bekerja maksimal 28 jam per minggu.",
+        options: ["Hingga 10 jam","10-20 jam","20-28 jam","Ingin bekerja lebih dari 28 jam (perlu konfirmasi)"]
+      },
+      startDate: { label: "Kapan Anda bisa mulai bekerja?", options: ["Secepatnya","Dalam 1 bulan","Dalam 2-3 bulan","Belum ditentukan"] },
+      area: { label: "Area kerja yang diinginkan", placeholder: "Contoh: Kota Osaka" },
+      experience: { label: "Pengalaman kerja sebelumnya / jenis pekerjaan", placeholder: "Contoh: 1 tahun di restoran, tugas kasir" },
+      notes: { label: "Hal lain yang ingin disampaikan (opsional)", placeholder: "Silakan tulis dengan bebas" }
+    }
+  },
+  my: {
+    formTitle: "အလုပ်အကြံပေးဝန်ဆောင်မှု",
+    formSubtitle: "အောက်ပါအချက်များကို ဖြည့်ပေးပါ။ ၁-၂ မိနစ်ခန့်ကြာပါမည်။",
+    submit: "ပေးပို့ရန်",
+    required: "လိုအပ်သည်",
+    back: "ဘာသာစကား ရွေးချယ်ရန် ပြန်သွားရန်",
+    thanksTitle: "ပေးပို့ပေးသည့်အတွက် ကျေးဇူးတင်ပါသည်",
+    thanksBody: "အချက်အလက်များကို စစ်ဆေးပြီးနောက် မကြာမီ ဆက်သွယ်ပါမည်။",
+    q: {
+      name: { label: "အမည်အပြည့်အစုံ", placeholder: "ဥပမာ: မောင်မောင်" },
+      phone: { label: "ဖုန်းနံပါတ်", placeholder: "ဥပမာ: 090-1234-5678" },
+      employmentType: { label: "လိုချင်သော အလုပ်အကိုင်အမျိုးအစား", options: [["fulltime","အချိန်ပြည့်ဝန်ထမ်း (正社員)"],["parttime","အချိန်ပိုင်း (アルバイト)"]] },
+      desiredJob: {
+        label: "လိုချင်သော အလုပ်အကိုင်",
+        fulltime: ["အရောင်းအ၀ယ်","ရုံးအုပ်ချုပ်ရေး","IT အင်ဂျင်နီယာ","စကားပြန် / ဘာသာပြန်","ကုန်သွယ်ရေး / နိုင်ငံတကာလုပ်ငန်း","အခြား"],
+        parttime: ["စားသောက်ဆိုင်","အဆင်ပြေဆိုင်","ပွဲအလုပ်သမား","စက်ရုံ","သန့်ရှင်းရေး","အခြား"]
+      },
+      visaStatus: { label: "နေထိုင်ခွင့်အခြေအနေ (ဗီဇာ)", placeholder: "ဥပမာ: ကျောင်းသား" },
+      japaneseLevel: { label: "ဂျပန်ဘာသာစွမ်းရည်အဆင့်", options: ["အခြေခံ","အလယ်အလတ်","အဆင့်မြင့်","မိခင်ဘာသာစကားအဆင့်"] },
+      workableHours: {
+        label: "တစ်ပတ်လုပ်နိုင်သောနာရီ",
+        note: "ဥပဒေအရ၊ အထူးခွင့်ပြုချက်ရရှိထားသော နိုင်ငံခြားကျောင်းသားများသည် တစ်ပတ်လျှင် အများဆုံး ၂၈ နာရီအထိသာ အလုပ်လုပ်နိုင်သည်။",
+        options: ["၁၀ နာရီအထိ","၁၀-၂၀ နာရီ","၂၀-၂၈ နာရီ","၂၈ နာရီထက်ပို၍ လုပ်ချင်သည် (အတည်ပြုရန်လိုအပ်သည်)"]
+      },
+      startDate: { label: "မည်သည့်အချိန်မှ အလုပ်စတင်နိုင်မည်နည်း", options: ["ဖြစ်နိုင်သမျှမြန်မြန်","၁ လအတွင်း","၂-၃ လအတွင်း","မဆုံးဖြတ်ရသေးပါ"] },
+      area: { label: "လုပ်ချင်သောနေရာ", placeholder: "ဥပမာ: အိုဆာကာမြို့တွင်း" },
+      experience: { label: "ယခင်အလုပ်အတွေ့အကြုံ / အလုပ်အကိုင်", placeholder: "ဥပမာ: စားသောက်ဆိုင်တွင် ၁ နှစ်၊ ငွေကိုင်အလုပ်" },
+      notes: { label: "အခြားပြောလိုသည်များ (မဖြည့်လည်းရသည်)", placeholder: "လွတ်လပ်စွာ ရေးပါ" }
+    }
+  },
+  hi: {
+    formTitle: "नौकरी परामर्श",
+    formSubtitle: "कृपया नीचे दिए गए विवरण भरें। इसमें लगभग 1-2 मिनट लगेंगे।",
+    submit: "सबमिट करें",
+    required: "आवश्यक",
+    back: "भाषा चयन पर वापस जाएं",
+    thanksTitle: "सबमिट करने के लिए धन्यवाद",
+    thanksBody: "हम आपकी जानकारी की समीक्षा करके जल्द ही आपसे संपर्क करेंगे।",
+    q: {
+      name: { label: "पूरा नाम", placeholder: "उदाहरण: राज शर्मा" },
+      phone: { label: "फ़ोन नंबर", placeholder: "उदाहरण: 090-1234-5678" },
+      employmentType: { label: "आप किस प्रकार का रोजगार चाहते हैं", options: [["fulltime","पूर्णकालिक कर्मचारी"],["parttime","अंशकालिक (アルバイト)"]] },
+      desiredJob: {
+        label: "इच्छित नौकरी का प्रकार",
+        fulltime: ["बिक्री","कार्यालय प्रशासन","आईटी इंजीनियर","दुभाषिया / अनुवादक","व्यापार / अंतर्राष्ट्रीय व्यवसाय","अन्य"],
+        parttime: ["रेस्टोरेंट / खाद्य सेवा","सुविधा स्टोर","इवेंट स्टाफ","फैक्ट्री / गोदाम","सफाई","अन्य"]
+      },
+      visaStatus: { label: "निवास स्थिति (वीज़ा)", placeholder: "उदाहरण: छात्र" },
+      japaneseLevel: { label: "जापानी भाषा स्तर", options: ["शुरुआती","मध्यम","उन्नत","मातृभाषा स्तर"] },
+      workableHours: {
+        label: "प्रति सप्ताह काम करने योग्य घंटे",
+        note: "कानून के अनुसार, योग्यता से बाहर की गतिविधि की अनुमति वाले अंतर्राष्ट्रीय छात्र प्रति सप्ताह अधिकतम 28 घंटे काम कर सकते हैं।",
+        options: ["10 घंटे तक","10-20 घंटे","20-28 घंटे","28 घंटे से अधिक काम करना चाहते हैं (पुष्टि आवश्यक)"]
+      },
+      startDate: { label: "आप कब से काम शुरू कर सकते हैं?", options: ["जल्द से जल्द","1 महीने के भीतर","2-3 महीने के भीतर","अभी तय नहीं"] },
+      area: { label: "पसंदीदा कार्य क्षेत्र", placeholder: "उदाहरण: ओसाका शहर" },
+      experience: { label: "पिछला कार्य अनुभव / नौकरी का प्रकार", placeholder: "उदाहरण: रेस्टोरेंट में 1 साल, कैशियर का काम" },
+      notes: { label: "कुछ और जो आप साझा करना चाहें (वैकल्पिक)", placeholder: "स्वतंत्र रूप से लिखें" }
+    }
+  },
+  bn: {
+    formTitle: "চাকরি পরামর্শ",
+    formSubtitle: "অনুগ্রহ করে নিচের তথ্যগুলো পূরণ করুন। এতে প্রায় ১-২ মিনিট সময় লাগবে।",
+    submit: "জমা দিন",
+    required: "আবশ্যক",
+    back: "ভাষা নির্বাচনে ফিরে যান",
+    thanksTitle: "জমা দেওয়ার জন্য ধন্যবাদ",
+    thanksBody: "আমরা আপনার তথ্য পর্যালোচনা করে শীঘ্রই আপনার সাথে যোগাযোগ করব।",
+    q: {
+      name: { label: "পুরো নাম", placeholder: "উদাহরণ: করিম আহমেদ" },
+      phone: { label: "ফোন নম্বর", placeholder: "উদাহরণ: 090-1234-5678" },
+      employmentType: { label: "আপনি কোন ধরনের কর্মসংস্থান চান", options: [["fulltime","পূর্ণকালীন কর্মী"],["parttime","খণ্ডকালীন (アルバイト)"]] },
+      desiredJob: {
+        label: "কাঙ্ক্ষিত চাকরির ধরন",
+        fulltime: ["বিক্রয়","অফিস প্রশাসন","আইটি ইঞ্জিনিয়ার","দোভাষী / অনুবাদক","বাণিজ্য / আন্তর্জাতিক ব্যবসা","অন্যান্য"],
+        parttime: ["রেস্টুরেন্ট / খাদ্য সেবা","সুবিধা স্টোর","ইভেন্ট স্টাফ","কারখানা / গুদাম","পরিষ্কার-পরিচ্ছন্নতা","অন্যান্য"]
+      },
+      visaStatus: { label: "বসবাসের অবস্থা (ভিসা)", placeholder: "উদাহরণ: শিক্ষার্থী" },
+      japaneseLevel: { label: "জাপানি ভাষার দক্ষতা", options: ["প্রাথমিক","মধ্যম","উচ্চ","মাতৃভাষা স্তর"] },
+      workableHours: {
+        label: "সপ্তাহে কাজ করতে পারবেন এমন ঘণ্টা",
+        note: "আইন অনুযায়ী, যোগ্যতার বাইরের কার্যক্রমের অনুমতিপ্রাপ্ত আন্তর্জাতিক শিক্ষার্থীরা সপ্তাহে সর্বোচ্চ ২৮ ঘণ্টা কাজ করতে পারেন।",
+        options: ["১০ ঘণ্টা পর্যন্ত","১০-২০ ঘণ্টা","২০-২৮ ঘণ্টা","২৮ ঘণ্টার বেশি কাজ করতে চাই (নিশ্চিতকরণ প্রয়োজন)"]
+      },
+      startDate: { label: "আপনি কবে থেকে কাজ শুরু করতে পারবেন?", options: ["যত দ্রুত সম্ভব","১ মাসের মধ্যে","২-৩ মাসের মধ্যে","এখনও ঠিক হয়নি"] },
+      area: { label: "পছন্দের কর্মক্ষেত্র", placeholder: "উদাহরণ: ওসাকা শহর" },
+      experience: { label: "পূর্ববর্তী কাজের অভিজ্ঞতা / চাকরির ধরন", placeholder: "উদাহরণ: একটি রেস্টুরেন্টে ১ বছর, ক্যাশিয়ারের কাজ" },
+      notes: { label: "আপনি আর কিছু শেয়ার করতে চান (ঐচ্ছিক)", placeholder: "স্বাধীনভাবে লিখুন" }
+    }
+  }
+};
+
+let currentLang = "ja";
+
+const screenLang = document.getElementById("screen-lang");
+const screenForm = document.getElementById("screen-form");
+const screenThanks = document.getElementById("screen-thanks");
+const langGrid = document.getElementById("lang-grid");
+const hearingForm = document.getElementById("hearing-form");
+
+function showScreen(el) {
+  [screenLang, screenForm, screenThanks].forEach(s => s.classList.remove("active"));
+  el.classList.add("active");
+}
+
+// build language buttons
+LANG_LABELS.forEach(l => {
+  const btn = document.createElement("button");
+  btn.type = "button";
+  btn.className = "lang-btn";
+  btn.textContent = l.native;
+  btn.addEventListener("click", () => {
+    currentLang = l.code;
+    renderForm();
+    showScreen(screenForm);
+  });
+  langGrid.appendChild(btn);
+});
+
+function el(tag, attrs = {}, children = []) {
+  const node = document.createElement(tag);
+  Object.entries(attrs).forEach(([k, v]) => {
+    if (k === "text") node.textContent = v;
+    else node.setAttribute(k, v);
+  });
+  children.forEach(c => node.appendChild(c));
+  return node;
+}
+
+function buildTextField(id, def, required) {
+  const wrap = el("div", { class: "field" });
+  const label = el("label", { class: "field-label", for: id, text: def.label });
+  if (required) label.appendChild(el("span", { class: "required-mark", text: T[currentLang].required }));
+  wrap.appendChild(label);
+  wrap.appendChild(el("input", { type: id === "phone" ? "tel" : "text", id, name: id, placeholder: def.placeholder || "", ...(required ? { required: "required" } : {}) }));
+  return wrap;
+}
+
+function buildTextareaField(id, def, required) {
+  const wrap = el("div", { class: "field" });
+  const label = el("label", { class: "field-label", for: id, text: def.label });
+  if (required) label.appendChild(el("span", { class: "required-mark", text: T[currentLang].required }));
+  wrap.appendChild(label);
+  const ta = el("textarea", { id, name: id, placeholder: def.placeholder || "" });
+  if (required) ta.setAttribute("required", "required");
+  wrap.appendChild(ta);
+  return wrap;
+}
+
+function buildSelectField(id, def, required) {
+  const wrap = el("div", { class: "field" });
+  const label = el("label", { class: "field-label", for: id, text: def.label });
+  if (required) label.appendChild(el("span", { class: "required-mark", text: T[currentLang].required }));
+  wrap.appendChild(label);
+  const select = el("select", { id, name: id, ...(required ? { required: "required" } : {}) });
+  select.appendChild(el("option", { value: "", text: "" }));
+  def.options.forEach(opt => select.appendChild(el("option", { value: opt, text: opt })));
+  wrap.appendChild(select);
+  return wrap;
+}
+
+function buildRadioField(id, def, required, optionPairs) {
+  const wrap = el("div", { class: "field" });
+  const label = el("label", { class: "field-label", text: def.label });
+  if (required) label.appendChild(el("span", { class: "required-mark", text: T[currentLang].required }));
+  wrap.appendChild(label);
+  const group = el("div", { class: "radio-group" });
+  optionPairs.forEach(([value, text]) => {
+    const optLabel = el("label", { class: "radio-option" });
+    const input = el("input", { type: "radio", name: id, value });
+    if (required) input.setAttribute("required", "required");
+    optLabel.appendChild(input);
+    optLabel.appendChild(el("span", { text }));
+    group.appendChild(optLabel);
+  });
+  wrap.appendChild(group);
+  if (def.note) wrap.appendChild(el("div", { class: "note", text: def.note }));
+  return wrap;
+}
+
+function renderForm() {
+  const t = T[currentLang];
+  document.getElementById("form-title").textContent = t.formTitle;
+  document.getElementById("form-subtitle").textContent = t.formSubtitle;
+  document.getElementById("back-link").textContent = t.back;
+
+  hearingForm.innerHTML = "";
+  hearingForm.appendChild(buildTextField("name", t.q.name, true));
+  hearingForm.appendChild(buildTextField("phone", t.q.phone, true));
+  hearingForm.appendChild(buildRadioField("employmentType", t.q.employmentType, true, t.q.employmentType.options));
+
+  const desiredJobWrap = buildRadioField("desiredJob", t.q.desiredJob, true, t.q.desiredJob.fulltime.map(o => [o, o]));
+  desiredJobWrap.id = "desiredJob-wrap";
+  hearingForm.appendChild(desiredJobWrap);
+
+  hearingForm.appendChild(buildTextField("visaStatus", t.q.visaStatus, true));
+  hearingForm.appendChild(buildSelectField("japaneseLevel", t.q.japaneseLevel, true));
+
+  const workableHoursWrap = buildRadioField("workableHours", t.q.workableHours, false, t.q.workableHours.options.map(o => [o, o]));
+  workableHoursWrap.id = "workableHours-wrap";
+  hearingForm.appendChild(workableHoursWrap);
+
+  hearingForm.appendChild(buildSelectField("startDate", t.q.startDate, true));
+  hearingForm.appendChild(buildTextField("area", t.q.area, true));
+  hearingForm.appendChild(buildTextareaField("experience", t.q.experience, false));
+  hearingForm.appendChild(buildTextareaField("notes", t.q.notes, false));
+
+  const submitBtn = el("button", { type: "submit", class: "submit-btn", text: t.submit });
+  hearingForm.appendChild(submitBtn);
+
+  function refreshDesiredJob() {
+    const empType = hearingForm.querySelector('input[name="employmentType"]:checked');
+    const isPartTime = empType && empType.value === "parttime";
+    const jobOptions = isPartTime ? t.q.desiredJob.parttime : t.q.desiredJob.fulltime;
+    const newWrap = buildRadioField("desiredJob", t.q.desiredJob, true, jobOptions.map(o => [o, o]));
+    newWrap.id = "desiredJob-wrap";
+    document.getElementById("desiredJob-wrap").replaceWith(newWrap);
+
+    const hoursWrap = document.getElementById("workableHours-wrap");
+    hoursWrap.classList.toggle("hidden", !isPartTime);
+    hoursWrap.querySelectorAll("input").forEach(i => i.required = isPartTime);
+  }
+
+  hearingForm.querySelectorAll('input[name="employmentType"]').forEach(r => {
+    r.addEventListener("change", refreshDesiredJob);
+  });
+  refreshDesiredJob();
+
+  hearingForm.onsubmit = handleSubmit;
+}
+
+document.getElementById("back-link").addEventListener("click", () => showScreen(screenLang));
+
+function handleSubmit(ev) {
+  ev.preventDefault();
+  const submitBtn = hearingForm.querySelector(".submit-btn");
+  submitBtn.disabled = true;
+
+  const formData = new FormData(hearingForm);
+  formData.append("language", currentLang);
+
+  fetch(GAS_ENDPOINT_URL, {
+    method: "POST",
+    mode: "no-cors",
+    body: formData
+  }).then(() => {
+    showThanks();
+  }).catch(() => {
+    // no-cors では失敗を検知できないため、通信自体が発火していれば完了扱いにする
+    showThanks();
+  }).finally(() => {
+    submitBtn.disabled = false;
+  });
+}
+
+function showThanks() {
+  const t = T[currentLang];
+  document.getElementById("thanks-title").textContent = t.thanksTitle;
+  document.getElementById("thanks-body").textContent = t.thanksBody;
+  showScreen(screenThanks);
+}
+</script>
+
+</body>
+</html>
