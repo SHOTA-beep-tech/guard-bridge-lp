@@ -226,7 +226,12 @@ const T = {
         otherLabel: "具体的にご記入ください",
         otherPlaceholder: "例:介護、製造業など"
       },
-      visaStatus: { label: "在留資格", placeholder: "例:留学" },
+      visaStatus: {
+        label: "在留資格",
+        options: ["留学","家族滞在","その他"],
+        otherLabel: "具体的にご記入ください",
+        otherPlaceholder: "例:技術・人文知識・国際業務"
+      },
       japaneseLevel: { label: "日本語レベル", options: ["初級","中級","上級","母語話者"] },
       workableHours: {
         label: "週に働ける時間",
@@ -258,7 +263,12 @@ const T = {
         otherLabel: "Please specify",
         otherPlaceholder: "e.g. Caregiving, Manufacturing, etc."
       },
-      visaStatus: { label: "Residence status", placeholder: "e.g. Student" },
+      visaStatus: {
+        label: "Residence status",
+        options: ["Student (留学)","Dependent (家族滞在)","Other"],
+        otherLabel: "Please specify",
+        otherPlaceholder: "e.g. Engineer/Specialist in Humanities, etc."
+      },
       japaneseLevel: { label: "Japanese language level", options: ["Beginner","Intermediate","Advanced","Native level"] },
       workableHours: {
         label: "Hours you can work per week",
@@ -290,7 +300,12 @@ const T = {
         otherLabel: "请具体说明",
         otherPlaceholder: "例:护理、制造业等"
       },
-      visaStatus: { label: "在留资格", placeholder: "例:留学" },
+      visaStatus: {
+        label: "在留资格",
+        options: ["留学","家属滞在","其他"],
+        otherLabel: "请具体说明",
+        otherPlaceholder: "例:技术·人文知识·国际业务等"
+      },
       japaneseLevel: { label: "日语水平", options: ["初级","中级","高级","母语水平"] },
       workableHours: {
         label: "每周可工作时间",
@@ -322,7 +337,12 @@ const T = {
         otherLabel: "Vui lòng ghi rõ",
         otherPlaceholder: "VD: Chăm sóc người già, Sản xuất, v.v."
       },
-      visaStatus: { label: "Tư cách lưu trú", placeholder: "VD: Du học" },
+      visaStatus: {
+        label: "Tư cách lưu trú",
+        options: ["Du học (留学)","Lưu trú gia đình (家族滞在)","Khác"],
+        otherLabel: "Vui lòng ghi rõ",
+        otherPlaceholder: "VD: Kỹ sư/Nghiệp vụ quốc tế, v.v."
+      },
       japaneseLevel: { label: "Trình độ tiếng Nhật", options: ["Sơ cấp","Trung cấp","Cao cấp","Trình độ bản ngữ"] },
       workableHours: {
         label: "Số giờ có thể làm việc mỗi tuần",
@@ -354,7 +374,12 @@ const T = {
         otherLabel: "कृपया स्पष्ट रूपमा लेख्नुहोस्",
         otherPlaceholder: "जस्तै: स्याहार सुसार, उत्पादन आदि"
       },
-      visaStatus: { label: "बसोबास स्थिति (भिसा)", placeholder: "जस्तै: विद्यार्थी" },
+      visaStatus: {
+        label: "बसोबास स्थिति (भिसा)",
+        options: ["विद्यार्थी (留学)","पारिवारिक बसोबास (家族滞在)","अन्य"],
+        otherLabel: "कृपया स्पष्ट रूपमा लेख्नुहोस्",
+        otherPlaceholder: "जस्तै: प्राविधिक/मानविकी ज्ञान/अन्तर्राष्ट्रिय व्यवसाय आदि"
+      },
       japaneseLevel: { label: "जापानी भाषा स्तर", options: ["प्रारम्भिक","मध्यम","उच्च","मातृभाषा स्तर"] },
       workableHours: {
         label: "हप्तामा काम गर्न सक्ने घण्टा",
@@ -386,7 +411,12 @@ const T = {
         otherLabel: "Mohon sebutkan",
         otherPlaceholder: "Contoh: Perawatan lansia, Manufaktur, dll."
       },
-      visaStatus: { label: "Status tinggal (visa)", placeholder: "Contoh: Pelajar" },
+      visaStatus: {
+        label: "Status tinggal (visa)",
+        options: ["Pelajar (留学)","Tinggal Keluarga (家族滞在)","Lainnya"],
+        otherLabel: "Mohon sebutkan",
+        otherPlaceholder: "Contoh: Insinyur/Spesialis Humaniora, dll."
+      },
       japaneseLevel: { label: "Tingkat kemampuan bahasa Jepang", options: ["Pemula","Menengah","Mahir","Setara penutur asli"] },
       workableHours: {
         label: "Jam kerja yang bisa dilakukan per minggu",
@@ -418,7 +448,12 @@ const T = {
         otherLabel: "အသေးစိတ်ဖော်ပြပါ",
         otherPlaceholder: "ဥပမာ: အထူးစောင့်ရှောက်မှု၊ ကုန်ထုတ်လုပ်ငန်း စသည်"
       },
-      visaStatus: { label: "နေထိုင်ခွင့်အခြေအနေ (ဗီဇာ)", placeholder: "ဥပမာ: ကျောင်းသား" },
+      visaStatus: {
+        label: "နေထိုင်ခွင့်အခြေအနေ (ဗီဇာ)",
+        options: ["ကျောင်းသား (留学)","မိသားစုနေထိုင်ခွင့် (家族滞在)","အခြား"],
+        otherLabel: "အသေးစိတ်ဖော်ပြပါ",
+        otherPlaceholder: "ဥပမာ: အင်ဂျင်နီယာ/လူမှုသိပ္ပံပညာရှင် စသည်"
+      },
       japaneseLevel: { label: "ဂျပန်ဘာသာစွမ်းရည်အဆင့်", options: ["အခြေခံ","အလယ်အလတ်","အဆင့်မြင့်","မိခင်ဘာသာစကားအဆင့်"] },
       workableHours: {
         label: "တစ်ပတ်လုပ်နိုင်သောနာရီ",
@@ -450,7 +485,12 @@ const T = {
         otherLabel: "कृपया स्पष्ट रूप से बताएं",
         otherPlaceholder: "उदाहरण: देखभाल कार्य, विनिर्माण आदि"
       },
-      visaStatus: { label: "निवास स्थिति (वीज़ा)", placeholder: "उदाहरण: छात्र" },
+      visaStatus: {
+        label: "निवास स्थिति (वीज़ा)",
+        options: ["छात्र (留学)","पारिवारिक निवास (家族滞在)","अन्य"],
+        otherLabel: "कृपया स्पष्ट रूप से बताएं",
+        otherPlaceholder: "उदाहरण: इंजीनियर/मानविकी विशेषज्ञ आदि"
+      },
       japaneseLevel: { label: "जापानी भाषा स्तर", options: ["शुरुआती","मध्यम","उन्नत","मातृभाषा स्तर"] },
       workableHours: {
         label: "प्रति सप्ताह काम करने योग्य घंटे",
@@ -482,7 +522,12 @@ const T = {
         otherLabel: "বিস্তারিত উল্লেখ করুন",
         otherPlaceholder: "উদাহরণ: সেবা যত্ন, উৎপাদন ইত্যাদি"
       },
-      visaStatus: { label: "বসবাসের অবস্থা (ভিসা)", placeholder: "উদাহরণ: শিক্ষার্থী" },
+      visaStatus: {
+        label: "বসবাসের অবস্থা (ভিসা)",
+        options: ["শিক্ষার্থী (留学)","পারিবারিক অবস্থান (家族滞在)","অন্যান্য"],
+        otherLabel: "বিস্তারিত উল্লেখ করুন",
+        otherPlaceholder: "উদাহরণ: প্রকৌশলী/মানবিক বিশেষজ্ঞ ইত্যাদি"
+      },
       japaneseLevel: { label: "জাপানি ভাষার দক্ষতা", options: ["প্রাথমিক","মধ্যম","উচ্চ","মাতৃভাষা স্তর"] },
       workableHours: {
         label: "সপ্তাহে কাজ করতে পারবেন এমন ঘণ্টা",
@@ -566,6 +611,27 @@ function buildSelectField(id, def, required) {
   return wrap;
 }
 
+function buildRadioWithOther(name, def, options) {
+  const otherValue = options[options.length - 1];
+  const radioWrap = buildRadioField(name, def, true, options.map(o => [o, o]));
+  radioWrap.id = `${name}-wrap`;
+
+  const otherWrap = buildTextField(`${name}Other`, { label: def.otherLabel, placeholder: def.otherPlaceholder }, false);
+  otherWrap.id = `${name}Other-wrap`;
+  otherWrap.classList.add("hidden");
+
+  function refreshOtherVisibility() {
+    const checked = radioWrap.querySelector(`input[name="${name}"]:checked`);
+    const isOther = !!checked && checked.value === otherValue;
+    otherWrap.classList.toggle("hidden", !isOther);
+    otherWrap.querySelector("input").required = isOther;
+  }
+  radioWrap.querySelectorAll(`input[name="${name}"]`).forEach(r => r.addEventListener("change", refreshOtherVisibility));
+  refreshOtherVisibility();
+
+  return { radioWrap, otherWrap };
+}
+
 function buildRadioField(id, def, required, optionPairs) {
   const wrap = el("div", { class: "field" });
   const label = el("label", { class: "field-label", text: def.label });
@@ -600,7 +666,10 @@ function renderForm() {
   desiredJobWrap.id = "desiredJob-wrap";
   hearingForm.appendChild(desiredJobWrap);
 
-  hearingForm.appendChild(buildTextField("visaStatus", t.q.visaStatus, true));
+  const visaStatusFields = buildRadioWithOther("visaStatus", t.q.visaStatus, t.q.visaStatus.options);
+  hearingForm.appendChild(visaStatusFields.radioWrap);
+  hearingForm.appendChild(visaStatusFields.otherWrap);
+
   hearingForm.appendChild(buildSelectField("japaneseLevel", t.q.japaneseLevel, true));
 
   const workableHoursWrap = buildRadioField("workableHours", t.q.workableHours, false, t.q.workableHours.options.map(o => [o, o]));
@@ -619,27 +688,12 @@ function renderForm() {
     const empType = hearingForm.querySelector('input[name="employmentType"]:checked');
     const isPartTime = empType && empType.value === "parttime";
     const jobOptions = isPartTime ? t.q.desiredJob.parttime : t.q.desiredJob.fulltime;
-    const otherValue = jobOptions[jobOptions.length - 1];
 
-    const newWrap = buildRadioField("desiredJob", t.q.desiredJob, true, jobOptions.map(o => [o, o]));
-    newWrap.id = "desiredJob-wrap";
-    document.getElementById("desiredJob-wrap").replaceWith(newWrap);
-
+    const { radioWrap, otherWrap } = buildRadioWithOther("desiredJob", t.q.desiredJob, jobOptions);
+    document.getElementById("desiredJob-wrap").replaceWith(radioWrap);
     const existingOtherWrap = document.getElementById("desiredJobOther-wrap");
     if (existingOtherWrap) existingOtherWrap.remove();
-    const otherWrap = buildTextField("desiredJobOther", { label: t.q.desiredJob.otherLabel, placeholder: t.q.desiredJob.otherPlaceholder }, false);
-    otherWrap.id = "desiredJobOther-wrap";
-    otherWrap.classList.add("hidden");
-    newWrap.after(otherWrap);
-
-    function refreshOtherVisibility() {
-      const checked = newWrap.querySelector('input[name="desiredJob"]:checked');
-      const isOther = !!checked && checked.value === otherValue;
-      otherWrap.classList.toggle("hidden", !isOther);
-      otherWrap.querySelector("input").required = isOther;
-    }
-    newWrap.querySelectorAll('input[name="desiredJob"]').forEach(r => r.addEventListener("change", refreshOtherVisibility));
-    refreshOtherVisibility();
+    radioWrap.after(otherWrap);
 
     const hoursWrap = document.getElementById("workableHours-wrap");
     hoursWrap.classList.toggle("hidden", !isPartTime);
@@ -667,6 +721,12 @@ function handleSubmit(ev) {
     formData.set("desiredJob", `${formData.get("desiredJob")}: ${otherText}`);
   }
   formData.delete("desiredJobOther");
+
+  const visaOtherText = formData.get("visaStatusOther");
+  if (visaOtherText) {
+    formData.set("visaStatus", `${formData.get("visaStatus")}: ${visaOtherText}`);
+  }
+  formData.delete("visaStatusOther");
   formData.append("language", currentLang);
 
   fetch(GAS_ENDPOINT_URL, {
